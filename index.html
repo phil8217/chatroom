@@ -57,9 +57,9 @@
         if(name=="" || name==null){
           name = "guest";
         }
-        //tell server
+        
         socket.emit("add user",name);
-        //監聽新訊息事件
+        
         socket.on('chat message', function(data){
           appendMessage(data.username+":"+data.msg);
         });
@@ -89,7 +89,7 @@
       
     </script>
   </head>
-  <body background="http://i.imgur.com/hUIBVwx.jpg">
+  <body background="http://i.imgur.com/gawSVqz.png">
   <div id="message_block">
     <ul id="messages"></ul>
   <div>
