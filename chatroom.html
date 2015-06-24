@@ -95,10 +95,10 @@
           appendMessage(data.username+":"+data.msg);
         });
         socket.on('add user',function(data){
-          appendMessage(data.username+" join");
+          appendMessage("歡迎"+  data.username+" 加入");
         });
         socket.on('user left',function(data){
-          appendMessage(data.username+" leave");
+          appendMessage(data.username+" 離開了");
         });
         $('#send').click(function(){
           var text = $('#messagein').val();
