@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+  <head>
+    <title>期末聊天室</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      #header {
+        position: absolute;
+        top: 0;
+        height: 10%;
+        width: 100%;
+        background-color:#C68A46;
+        color:white;
+        text-align:center;
+        padding:1%;
+      }
+      #nav {
+        position:absolute;
+        height: 1850px;
+        top:10%;
+        width: 10%;
+        right: 0;
+        line-height:30px;
+        background-color:#F0D392;
+        float:right;
+        padding:0.5%;       
+        }
+      #messagein{ 
+        border: 2px solid black; 
+        padding: 10px; 
+        width: 80%; 
+        margin: .5%; 
+        position: fixed; 
+        bottom: 0;
+      }
+      #send{ 
+        width: 8%; 
+        margin: .5%; 
+        margin-left: .5%;
+        margin-right: 10.5%;
+        background: rgb(130, 224, 255);
+        color:black; 
+        padding: 10px; 
+        position: fixed; 
+        bottom: 0;
+        right:5px;
+      }
+      #message_block{
+        width:90%;
+        position: absolute;
+        top:10%;
+        bottom:5%;
+        margin-bottom:10px;
+        border: solid 2px black; 
+        overflow:auto;
+      }
+      #messages { 
+        list-style-type: none; 
+        margin: 10px; 
+        
+        padding: 0; 
+      }
+      #messages li { 
+        padding: 5px 10px; 
+        font-size:16pt;
+      }
+      #messages li:nth-child(odd) { 
+        background: #eee; 
+      }
+    </style>
+    <div id="header">
+    <h1>聊天室</h1>
+    </div>
+
+    <div id="nav">
+    <a href="http://www.yahoo.com.tw/">Yahoo</a><br>
+    <a href="http://imgur.com/MgkQs4a">NOPE</a><br>
+    <a href="http://phil8217.github.io/webcreater.js/Mobile%20Suit%20Gundam%20UC.htm">MS GUNDAM UC</a><br>
+    </div>
+
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      var socket = io();
+      $(document).ready(function(){
+        var name = prompt("Please input your name:","guest");
+        if(name=="" || name==null){
+          name = "guest";
+        }
+        
+        socket.emit("add user",name);
+        
+        socket.on('chat message', function(data){
+          appendMessage(data.username+":"+data.msg);
+        });
+        socket.on('add user',function(data){
+          appendMessage(data.username+" join");
+        });
+        socket.on('user left',function(data){
+          appendMessage(data.username+" leave");
+        });
+        $('#send').click(function(){
+          var text = $('#messagein').val();
+          socket.emit('chat message', text);
+          $('#messagein').val('');
+          return false;
+        });
+        $("#messagein").keydown(function(event){
+          if ( event.which == 13 ){
+            $('#send').click();
+          }
+        });
+        function appendMessage(msg){
+          $('#messages').append($('<li>').text(msg));
+          var message = document.getElementById("message_block");
+          message.scrollTop = message.scrollHeight;
+        }
+      });
+      
+    </script>
+  </head>
+  <body background="http://i.imgur.com/gawSVqz.png">
+  <div id="message_block">
+    <ul id="messages"></ul>
+  <div>
+    <input id="messagein" autocomplete="off" /><button id="send">Send</button>
+  </body>
+</html>
