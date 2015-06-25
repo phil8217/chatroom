@@ -96,7 +96,7 @@
         });
         socket.on('add user',function(data){//當觸發add user時顯示歡迎"使用者"加入
           appendMessage("歡迎"+  data.username+" 加入");
-        
+        });
         socket.on('user left',function(data){//當觸發user left時顯示"使用者"離開了
           appendMessage(data.username+" 離開了");
         });
