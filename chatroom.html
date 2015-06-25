@@ -79,42 +79,42 @@
     <a href="http://phil8217.github.io/webcreater.js/Mobile%20Suit%20Gundam%20UC.htm">MS GUNDAM UC</a><br>
     </div>
 
-    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script> 
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script><!--為網頁端裝上SOCKET、JQUERY模組-->
     <script>
       var socket = io();
       $(document).ready(function(){
-        var name = prompt("Please input your name:","guest");
+        var name = prompt("您的暱稱","未命名");//跳出彈掉視窗詢問名字
         if(name=="" || name==null){
-          name = "guest";
+          name = "未命名";
         }
         
-        socket.emit("add user",name);
+        socket.emit("add user",name);//接著回傳server端 add user 事件
         
-        socket.on('chat message', function(data){
+        socket.on('chat message', function(data){//當觸發 chat message事件顯示"使用者名稱":"msg內容"
           appendMessage(data.username+":"+data.msg);
         });
-        socket.on('add user',function(data){
+        socket.on('add user',function(data){//當觸發add user時顯示歡迎"使用者"加入
           appendMessage("歡迎"+  data.username+" 加入");
         });
-        socket.on('user left',function(data){
+        socket.on('user left',function(data){//當觸發user left時顯示"使用者"離開了
           appendMessage(data.username+" 離開了");
         });
-        $('#send').click(function(){
+        $('#send').click(function(){//建立click事件
           var text = $('#messagein').val();
-          socket.emit('chat message', text);
+          socket.emit('chat message', text);//回傳server chat message事件，內容為text
           $('#messagein').val('');
           return false;
         });
-        $("#messagein").keydown(function(event){
-          if ( event.which == 13 ){
-            $('#send').click();
+        $("#messagein").keydown(function(event){//messagein觸發keydown事件，執行function
+          if ( event.which == 13 ){//??
+            $('#send').click();//send觸發click事件
           }
         });
         function appendMessage(msg){
-          $('#messages').append($('<li>').text(msg));
-          var message = document.getElementById("message_block");
-          message.scrollTop = message.scrollHeight;
+          $('#messages').append($('<li>').text(msg));//在每個message後面加上li
+          var message = document.getElementById("message_block");//取得message_block的值
+          message.scrollTop = message.scrollHeight;//設定頁面滾動的方式
         }
       });
       
