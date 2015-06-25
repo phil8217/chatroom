@@ -96,18 +96,18 @@
         });
         socket.on('add user',function(data){//當觸發add user時顯示歡迎"使用者"加入
           appendMessage("歡迎"+  data.username+" 加入");
-        });
+        
         socket.on('user left',function(data){//當觸發user left時顯示"使用者"離開了
           appendMessage(data.username+" 離開了");
         });
         $('#send').click(function(){//建立click事件
           var text = $('#messagein').val();
           socket.emit('chat message', text);//回傳server chat message事件，內容為text
-          $('#messagein').val('');
+          $('#messagein').val('');//把messagein清空
           return false;
         });
         $("#messagein").keydown(function(event){//messagein觸發keydown事件，執行function
-          if ( event.which == 13 ){//??
+          if ( event.which == 13 ){//當按下enter
             $('#send').click();//send觸發click事件
           }
         });
